@@ -7,21 +7,23 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:umut123ss@46.37.99.32:5432/kolaylamarketing"
 }
 
 model Customer {
-  id         Int      @id @default(autoincrement())
-  name       String
-  address    String
-  lat        Float
-  long       Float
-  category   String
-  phone      String
-  type       String
-  tags       String[]
-  province   String
-
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  lat       Float
+  long      Float
+  category  String
+  phone     String
+  type      String
+  tags      String[]
+  province  String
+  note      String
+  email     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
+

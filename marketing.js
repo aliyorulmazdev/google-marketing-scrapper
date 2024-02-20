@@ -5,33 +5,13 @@ const { PrismaClient } = require("@prisma/client");
 // Prisma client oluştur
 const prisma = new PrismaClient();
 
-// İzmir'in tüm ilçeleri
+// Manisa'nın tüm ilçeleri
 const districts = [
-    "Altındağ",
-    "Çankaya",
-    "Etimesgut",
-    "Keçiören",
-    "Mamak",
-    "Sincan",
-    "Yenimahalle",
-    "Akyurt",
-    "Ayaş",
-    "Bala",
-    "Beypazarı",
-    "Çamlıdere",
-    "Çubuk",
-    "Elmadağ",
-    "Evren",
-    "Gölbaşı",
-    "Güdül",
-    "Haymana",
-    "Kalecik",
-    "Kazan",
-    "Kızılcahamam",
-    "Nallıhan",
-    "Polatlı",
-    "Şereflikoçhisar"
-  ];
+  "Akseki",
+  "Alanya",
+];
+
+
   
   
 // İlk sayfadan başlayarak tüm sonuçları almak için bir fonksiyon tanımlayalım
@@ -40,6 +20,7 @@ async function getAllResults() {
 
   // Her bir ilçe için istek yap
   for (const district of districts) {
+    console.log(`Şu district inceleniyor: ${district}`);
     let page = 1;
 
     // Tüm sayfaları dolaş
@@ -66,7 +47,6 @@ async function getAllResults() {
         const pageResults = response.data.places;
 
         if (pageResults.length === 0) {
-          // Sayfa sonucu boşsa döngüden çık
           break;
         }
 
@@ -111,14 +91,16 @@ getAllResults()
       // Customer objesini oluştur ve dön
       return {
         name: place.title,
-        address: place.address || "", // Adres bilgisi yoksa boş bir dize ata
+        address: place.address || "",
         lat: place.latitude || 0,
         long: place.longitude || 0,
-        category: place.category || "",
+        category: place.category  || "",
         phone: phone || "",
         type: "potential",
         tags: customerTags,
-        province: `ankara`, // İlçe-izmir formatında ilçe bilgisini ve İzmir'i birleştir
+        province: `antalya`,
+        email: '',
+        note: ''
       };
     });
 
