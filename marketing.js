@@ -13,7 +13,6 @@ const districts = [
 
 
   
-  
 // İlk sayfadan başlayarak tüm sonuçları almak için bir fonksiyon tanımlayalım
 async function getAllResults() {
   let allResults = [];
@@ -72,11 +71,13 @@ getAllResults()
     // Her bir sonucu işle
     const customers = results.map((place) => {
       // Telefon numarasındaki parantezleri ve boşlukları sil
-      const phone = place.phoneNumber
-        ? place.phoneNumber.replace(/[()\s]/g, "")
-        : "";
+      const phone = place.phoneNumber ? place.phoneNumber.replace(/[()\s]/g, "") : "";
       // Telefon numarasının "05" ile başlayıp başlamadığını kontrol et
       const isStartingWith05 = phone.startsWith("05");
+      // Adres, telefon ve kategori dolu mu kontrol et
+      if (!place.address || !phone || !place.category) {
+        return null; // Adres, telefon veya kategori boşsa müşteriyi null olarak işaretle
+      }
       // CustomerTags listesine uygun etiketleri ekle
       let customerTags = [];
       if (!phone) {
@@ -94,7 +95,7 @@ getAllResults()
         address: place.address || "",
         lat: place.latitude || 0,
         long: place.longitude || 0,
-        category: place.category  || "",
+        category: place.category || "",
         phone: phone || "",
         type: "potential",
         tags: customerTags,
@@ -102,7 +103,7 @@ getAllResults()
         email: '',
         note: ''
       };
-    });
+    }).filter(customer => customer !== null); // Boş olmayan müşterileri filtrele
 
     // Tüm müşterileri veritabanına kaydet
     for (const customer of customers) {
