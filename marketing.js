@@ -7,12 +7,38 @@ const prisma = new PrismaClient();
 
 // Manisa'nın tüm ilçeleri
 const districts = [
-  "Akseki",
-  "Alanya",
+  "Aliağa",
+  "Balçova",
+  "Bayındır",
+  "Bayraklı",
+  "Bergama",
+  "Beydağ",
+  "Bornova",
+  "Buca",
+  "Çeşme",
+  "Çiğli",
+  "Dikili",
+  "Foça",
+  "Gaziemir",
+  "Güzelbahçe",
+  "Karabağlar",
+  "Karaburun",
+  "Karşıyaka",
+  "Kemalpaşa",
+  "Kınık",
+  "Kiraz",
+  "Konak",
+  "Menderes",
+  "Menemen",
+  "Narlıdere",
+  "Ödemiş",
+  "Seferihisar",
+  "Selçuk",
+  "Tire",
+  "Torbalı",
+  "Urla",
 ];
 
-
-  
 // İlk sayfadan başlayarak tüm sonuçları almak için bir fonksiyon tanımlayalım
 async function getAllResults() {
   let allResults = [];
@@ -69,41 +95,45 @@ getAllResults()
     const googleMarketingTag = "google marketing";
 
     // Her bir sonucu işle
-    const customers = results.map((place) => {
-      // Telefon numarasındaki parantezleri ve boşlukları sil
-      const phone = place.phoneNumber ? place.phoneNumber.replace(/[()\s]/g, "") : "";
-      // Telefon numarasının "05" ile başlayıp başlamadığını kontrol et
-      const isStartingWith05 = phone.startsWith("05");
-      // Adres, telefon ve kategori dolu mu kontrol et
-      if (!place.address || !phone || !place.category) {
-        return null; // Adres, telefon veya kategori boşsa müşteriyi null olarak işaretle
-      }
-      // CustomerTags listesine uygun etiketleri ekle
-      let customerTags = [];
-      if (!phone) {
-        customerTags.push("no number");
-      } else if (!isStartingWith05) {
-        customerTags.push("fixed number");
-      } else {
-        customerTags.push("whatsapp user");
-      }
-      // Müşteriye "google marketing" etiketini ekle
-      customerTags.push(googleMarketingTag);
-      // Customer objesini oluştur ve dön
-      return {
-        name: place.title,
-        address: place.address || "",
-        lat: place.latitude || 0,
-        long: place.longitude || 0,
-        category: place.category || "",
-        phone: phone || "",
-        type: "potential",
-        tags: customerTags,
-        province: `antalya`,
-        email: '',
-        note: ''
-      };
-    }).filter(customer => customer !== null); // Boş olmayan müşterileri filtrele
+    const customers = results
+      .map((place) => {
+        // Telefon numarasındaki parantezleri ve boşlukları sil
+        const phone = place.phoneNumber
+          ? place.phoneNumber.replace(/[()\s]/g, "")
+          : "";
+        // Telefon numarasının "05" ile başlayıp başlamadığını kontrol et
+        const isStartingWith05 = phone.startsWith("05");
+        // Adres, telefon ve kategori dolu mu kontrol et
+        if (!place.address || !phone || !place.category) {
+          return null; // Adres, telefon veya kategori boşsa müşteriyi null olarak işaretle
+        }
+        // CustomerTags listesine uygun etiketleri ekle
+        let customerTags = [];
+        if (!phone) {
+          customerTags.push("no number");
+        } else if (!isStartingWith05) {
+          customerTags.push("fixed number");
+        } else {
+          customerTags.push("whatsapp user");
+        }
+        // Müşteriye "google marketing" etiketini ekle
+        customerTags.push(googleMarketingTag);
+        // Customer objesini oluştur ve dön
+        return {
+          name: place.title,
+          address: place.address || "",
+          lat: place.latitude || 0,
+          long: place.longitude || 0,
+          category: place.category || "",
+          phone: phone || "",
+          type: "potential",
+          tags: customerTags,
+          province: `izmir`,
+          email: "",
+          note: "",
+        };
+      })
+      .filter((customer) => customer !== null); // Boş olmayan müşterileri filtrele
 
     // Tüm müşterileri veritabanına kaydet
     for (const customer of customers) {
