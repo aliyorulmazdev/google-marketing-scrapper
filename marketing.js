@@ -61,7 +61,7 @@ async function getAllResults() {
         method: "post",
         url: "https://google.serper.dev/places",
         headers: {
-          "X-API-KEY": "3d9d22f1189711839cc1b4febbfeb1fac3843433",
+          "X-API-KEY": "e324457500f43db1394b65c8d71a2d6601f42f37",
           "Content-Type": "application/json",
         },
         data: data,
@@ -157,3 +157,5 @@ getAllResults()
   .catch((error) => {
     console.log(error);
   });
+
+  await prisma.$disconnect();
